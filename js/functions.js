@@ -17,11 +17,6 @@ async function osekaiSkillIssue(res, err) {
 
 }
 
-function countDecimals(value) {
-    if(Math.floor(value) === value) return 0;
-    return value.toString().split(".")[1].length || 0; 
-}
-
 function GenerateFromPercentage(percentageValue) {
 
     if(
@@ -35,19 +30,6 @@ function GenerateFromPercentage(percentageValue) {
 }
 
 function GenerateFromCount(countValue) {
-
-    let DecimalsNum
-    if(countValue.includes(".")) {
-        DecimalsNum = countDecimals(countValue);
-    } else {
-        DecimalsNum = 0
-    }
-    if(Number.parseInt(DecimalsNum) > 2 || Number.isNaN(+Number.parseInt(DecimalsNum))) return;
-
-    if(
-        countValue < 1
-        || Math.ceil(Number.parseFloat(countValue)) > Number.parseFloat(medalAmount)
-    ) return;
 
     return ((countValue/medalAmount)*100).toFixed(2); //Percent you'll have after getting x medals, show that after calculation
 
