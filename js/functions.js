@@ -50,7 +50,7 @@ function GetUserData(userID) {
     xhr.responseType = 'json'; 
     xhr.send(); 
     xhr.onload = function() { 
-    if(xhr.responseText == "") return;
+    if(xhr.status !== '200') return;
     currentSpecificUserID = userID;
     currentSpecificUserMedalsCount = xhr.response.user_achievements.length; 
     }
