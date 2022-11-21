@@ -19,12 +19,6 @@ async function osekaiSkillIssue(res, err) {
 
 function GenerateFromPercentage(percentageValue) {
 
-    if(
-        percentageValue <= 0
-        || Math.ceil(percentageValue) > 100
-        || !Number.isFinite(+percentageValue)
-    ) return;
-
     return Math.ceil((medalAmount/100)*percentageValue); //Medals needed for x%, show that after calculation
 
 }
