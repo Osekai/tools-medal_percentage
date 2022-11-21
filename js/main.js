@@ -27,7 +27,7 @@ function GenerateFromPercentage(percentageValue) {
         || !Number.isFinite(+percentageValue)
     ) return;
 
-    let answerNum = Math.ceil((medalAmount/100)*percentageValue) //Medals needed for x%, show that after calculation
+    return Math.ceil((medalAmount/100)*percentageValue); //Medals needed for x%, show that after calculation
 
 }
 
@@ -46,6 +46,6 @@ function GenerateFromCount(countValue) {
         || Math.ceil(Number.parseFloat(countValue)) > Number.parseFloat(medalAmount)
     ) return;
 
-    let answerPercent = ((countValue/medalAmount)*100).toFixed(2) //Percent you'll have after getting x medals, show that after calculation
+    return ((countValue/medalAmount)*100).toFixed(2); //Percent you'll have after getting x medals, show that after calculation
 
 }
