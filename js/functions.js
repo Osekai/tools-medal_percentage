@@ -17,50 +17,58 @@ async function osekaiSkillIssue(res, err) {
 
 }
 
-function GenerateFromPercentage(percentageValue) {
+async function GenerateFromPercentage(percentageValue) {
 
     return Math.ceil((medalAmount/100)*percentageValue); //Medals needed for x%, show that after calculation
 
 }
 
-function GenerateFromCount(countValue) {
+async function GenerateFromCount(countValue) {
 
     return ((countValue/medalAmount)*100).toFixed(2); //Percent you'll have after getting x medals, show that after calculation
 
 }
 
-function GenerateFromToolUserCount(countInput) { //gets user medals count and calculates their % after getting x more medals they inputted 
+async function GenerateFromToolUserCount(countInput) { //gets user medals count and calculates their % after getting x more medals they inputted 
 
     let medalsAfterAdding = Number.parseInt(userMedalsCount) + Number.parseInt(countInput)
     return ((medalsAfterAdding/medalAmount)*100).toFixed(2);
 
 }
 
-function GenerateFromToolUserPercentage(percentageInput) { //gets user medals percent and calculates how many more medals they need to reach x percent they inputted
+async function GenerateFromToolUserPercentage(percentageInput) { //gets user medals percent and calculates how many more medals they need to reach x percent they inputted
 
     let medalsForInputtedPercent = Math.ceil((medalAmount/100)*percentageInput);
     return (Number.parseInt(medalsForInputtedPercent) - Number.parseInt(userMedalsCount));
 
 }
 
-function GetUserData(userID) {
+async function GetUserData(userID) {
+    new Promise((resolve, reject) => {
+        
+        let xhr = new XMLHttpRequest(); 
+        xhr.open("GET", `https://osekai.net/api/profiles/get_user.php?id=${userID}&min`, true); 
+        xhr.responseType = 'json'; 
+        xhr.send(); 
+        xhr.onload = function() { 
+        if(xhr.status !== '200') return;
+        currentSpecificUserID = userID;
+        currentSpecificUserMedalsCount = xhr.response.user_achievements.length; 
 
-    let xhr = new XMLHttpRequest(); 
-    xhr.open("GET", `https://osekai.net/api/profiles/get_user.php?id=${userID}&min`, true); 
-    xhr.responseType = 'json'; 
-    xhr.send(); 
-    xhr.onload = function() { 
-    if(xhr.status !== '200') return;
-    currentSpecificUserID = userID;
-    currentSpecificUserMedalsCount = xhr.response.user_achievements.length; 
-    }
+        resolve();
+        
+        }
+
+      })
+
+      return Promise;
 
 }
 
-function GenerateFromSpecificUserUserCount(specificUserId, countInput) {
+async function GenerateFromSpecificUserUserCount(specificUserId, countInput) {
 
     if(currentSpecificUserID !== specificUserId) {
-        GetUserData(specificUserId)
+       await GetUserData(specificUserId)
     }
 
     let medalsAfterAdding = Number.parseInt(currentSpecificUserMedalsCount) + Number.parseInt(countInput)
@@ -68,10 +76,10 @@ function GenerateFromSpecificUserUserCount(specificUserId, countInput) {
 
 }
 
-function GenerateFromSpecificUserUserPercentage(specificUserId, percentageInput) {
+async function GenerateFromSpecificUserUserPercentage(specificUserId, percentageInput) {
 
     if(currentSpecificUserID !== specificUserId) {
-        GetUserData(specificUserId)
+       await GetUserData(specificUserId)
     }
 
     let medalsForInputtedPercent = Math.ceil((medalAmount/100)*percentageInput);
